@@ -2,8 +2,10 @@ import { pool } from '../config/dbconfig.js';
 import { secret } from '../config/config.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import {PORT} from '../config/config.js';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const saltRounds = 10;
 
@@ -106,7 +108,7 @@ const getUserProfileImg = async (req, res) => {
             FROM users
             WHERE user_id = ?
         `, [req.userId]);
-        res.send('http://localhost:'+PORT+'/'+userImg[0].user_profile_img_path);
+        res.send(userImg[0].user_profile_img_path)
     } catch (error) {
         console.log(error);
     }

@@ -27,14 +27,13 @@ export const Profile = () => {
                 secondLastName: userData.user_second_lastname,
                 email: userData.user_email,
                 rol: userData.rol_name,
-                img: userData.user_profile_img_path
+                img: 'http://localhost:4000/' + img_path
             });
-            console.log(userData.user_profile_img_path);
             return userData;
         }
         getUser();
     }, [])
-
+    
     return (
         <>
             <h1>{userData.name}</h1>

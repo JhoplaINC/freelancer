@@ -9,12 +9,16 @@ import { registerRequest,
          updateUserImg, 
          getUserProfileImg}
     from '../controllers/accountController.js';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const router = Router();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/../../public/uploads');
+        cb(null, path.join(__dirname, '/../../public/uploads'));
     },
     filename: function (req, file, cb) {
         cb(null, `${Date.now()}_${file.originalname}`);
@@ -22,8 +26,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage});
-
-router.get('/', (req, res) => res.send('wena'));
 
 router.post('/register', registerRequest);
 

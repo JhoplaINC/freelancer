@@ -55,7 +55,7 @@ const userProfile = async (req, res) => {
     try {
         const [user_data] = await pool.query(`
             SELECT u.user_id, u.user_name, u.user_lastname, u.user_second_name, 
-                   u.user_second_lastname, u.user_email, u.user_nick, u.user_profile_img_path, r.rol_name
+                   u.user_second_lastname, u.user_email, u.user_nick, u.user_profile_img_filename, r.rol_name
             FROM users AS u
             LEFT JOIN roles AS r
             ON u.user_rol_id = r.rol_id
@@ -86,15 +86,15 @@ const updateUserImg = async (req, res) => {
         let img_name = req.file.originalname;
         let img_size = req.file.size;
         let img_type = req.file.mimetype;
-        let img_path = req.file.path;
+        let img_filename = req.file.filename;
         const [newUser] = await pool.query(`
             UPDATE users
             SET user_profile_img_name = ?,
             user_profile_img_size = ?,
             user_profile_img_type = ?,
-            user_profile_img_path = ?
+            user_profile_img_filename = ?
             WHERE user_id = ?
-        `, [img_name, img_size, img_type, img_path, req.userId]);
+        `, [img_name, img_size, img_type, img_filename, req.userId]);
         res.send(newUser);
     } catch (error) {
         console.log(error)
@@ -104,11 +104,11 @@ const updateUserImg = async (req, res) => {
 const getUserProfileImg = async (req, res) => {
     try {
         const [userImg] = await pool.query(`
-            SELECT user_profile_img_path
+            SELECT user_profile_img_filename
             FROM users
             WHERE user_id = ?
         `, [req.userId]);
-        res.send(userImg[0].user_profile_img_path)
+        res.send(userImg[0].user_profile_img_filename)
     } catch (error) {
         console.log(error);
     }

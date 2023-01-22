@@ -1,5 +1,5 @@
 import {createContext, useContext, useState} from 'react';
-import { getPostsRequest, getPostRequest, newPostRequest } from '../API/posts.api';
+import { getPostsRequest, getPostRequest, newPostRequest, newCommentRequest } from '../API/posts.api';
 import { loginRequest, 
          registerRequest, 
          getProfileDataRequest, 
@@ -49,6 +49,14 @@ export const FreelanceContextProvider = ({children}) => {
             }
         } catch (error) {
             console.log(error);   
+        }
+    }
+
+    const onNewComment = async (user_id, post_id, comment) => {
+        try {
+            const newComment = newCommentRequest(user_id, post_id, comment);
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -125,7 +133,8 @@ export const FreelanceContextProvider = ({children}) => {
             {
                 onGetPosts, 
                 onGetPost, 
-                onNewPost, 
+                onNewPost,
+                onNewComment,
                 posts, 
                 onLogin, 
                 onRegister, 

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFreelanceContext } from '../../context/FreelanceContext';
 import { Markup } from 'interweave';
+import { CreateComment } from '../../components/CreateComment';
+import { Comments } from '../../components/Comments';
 
 export const Post = () => {
 
@@ -21,6 +23,7 @@ export const Post = () => {
         const loadPost = async () => {
             const post = await onGetPost(params.user, params.post_id);
             setPost({
+                post_id: post.post[0].post_id,
                 title: post.post[0].post_title,
                 info: post.post[0].post_info,
                 author: post.post[0].user_name,
@@ -53,35 +56,10 @@ export const Post = () => {
                     <Markup content={post.info}/>
                 </div>
             </div>
-            <div className="comments-container">
-                {comments.map(comment => 
-                    comment.map(data => 
-                        <div className="comment-container" key={data.comment_id}>
-                            <div className="comment-header">
-                                <p>
-                                    {data.user_name}
-                                </p>
-                                <p>
-                                    {data.comment_at}
-                                </p>
-                            </div>
-                            <div className="comment-content">
-                                <p>
-                                    {data.comment_content}
-                                </p>
-                            </div>
-                            <div className="comment-footer">
-                                <span>
-                                    {data.comment_likes}
-                                </span>
-                                <span>
-                                    {data.comment_dislikes}
-                                </span>
-                            </div>
-                        </div>
-                    )
-                )}
-            </div>
+
+            <CreateComment post_id={post.post_id}/>
+            
+            <Comments comments={comments} />
         </>
     )
 }

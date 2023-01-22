@@ -56,4 +56,19 @@ const onCreateNewPost = async (req, res) => {
     }
 }
 
-export { onCreateNewPost, getPost, getPosts }
+// ADD A COMMENT IN A POST
+const onCreateNewComment = async (req, res) => {
+    try {
+        const {user_id, post_id, comment} = req.body[0];
+        const [newComment] = await pool.query(`
+            INSERT INTO comments
+            (comment_author_id, comment_post_id, comment_content)
+            VALUES (?, ?, ?)
+        `, [user_id, post_id, comment]);
+        res.send('comentario publicado');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export { onCreateNewPost, getPost, getPosts, onCreateNewComment }

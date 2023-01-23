@@ -2,7 +2,7 @@ import { pool } from '../config/dbconfig.js';
 import { secret } from '../config/config.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import path, { dirname } from 'path';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -50,6 +50,21 @@ const loginRequest = async (req, res) => {
     }
 }
 
+const thirdUserProfile = async (req, res) => {
+    try {
+        const [user_data] = await pool.query(`
+            SELECT u.user_id, u.user_name, u.user_lastname, u.user_second_name, 
+                u.user_second_lastname, u.user_email, u.user_nick, u.user_profile_img_filename, r.rol_name
+            FROM users AS u
+            LEFT JOIN roles AS r
+            ON u.user_rol_id = r.rol_id
+            WHERE u.user_nick = ?
+        `, [req.params.user_nick]);
+        res.send(user_data[0]);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const userProfile = async (req, res) => {
     try {
@@ -101,17 +116,4 @@ const updateUserImg = async (req, res) => {
     }
 }
 
-const getUserProfileImg = async (req, res) => {
-    try {
-        const [userImg] = await pool.query(`
-            SELECT user_profile_img_filename
-            FROM users
-            WHERE user_id = ?
-        `, [req.userId]);
-        res.send(userImg[0].user_profile_img_filename)
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export {registerRequest, loginRequest, userProfile, updateProfile, updateUserImg, getUserProfileImg}
+export { registerRequest, loginRequest, userProfile, thirdUserProfile, updateProfile, updateUserImg }

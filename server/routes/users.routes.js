@@ -1,13 +1,12 @@
-import express from 'express';
 import { Router} from 'express';
 import multer from 'multer';
 import { verifyToken } from '../controllers/verifyToken.js';
 import { registerRequest, 
          loginRequest, 
-         userProfile, 
+         userProfile,
+         thirdUserProfile,
          updateProfile, 
-         updateUserImg, 
-         getUserProfileImg}
+         updateUserImg }
     from '../controllers/accountController.js';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -33,10 +32,10 @@ router.post('/login', loginRequest);
 
 router.get('/profile', verifyToken, userProfile);
 
-router.post('/profile/update', verifyToken, updateProfile);
+router.get('/profile/:user_nick', thirdUserProfile);
 
-router.post('/profile/update-img', upload.single('user_profile_img_name'), verifyToken, updateUserImg);
+router.post('/update', verifyToken, updateProfile);
 
-router.get('/profile/get-img', verifyToken, getUserProfileImg);
+router.post('/update-img', upload.single('user_profile_img_name'), verifyToken, updateUserImg);
 
 export default router;

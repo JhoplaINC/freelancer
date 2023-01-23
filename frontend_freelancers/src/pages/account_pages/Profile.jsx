@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useFreelanceContext } from "../../context/FreelanceContext"
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export const Profile = () => {
 
-    const {onGetUserData, onGetUserImg} = useFreelanceContext();
+    const {onGetUserData, onGetThirdUserData } = useFreelanceContext();
+    const params = useParams();
 
     const [userData, setUserData] = useState({
         name: '',
@@ -16,10 +17,19 @@ export const Profile = () => {
         img: ''
     });
 
+    let ownProfile = false;
+    
+    if(params.user_nick) ownProfile = false;
+    if(!params.user_nick) ownProfile = true;
+    
     useEffect(() => {
         const getUser = async () => {
-            const userData = await onGetUserData();
-            const img_path = await onGetUserImg();
+            let userData;
+            if(ownProfile) {
+                userData = await onGetUserData();
+            } else if(!ownProfile) {
+                userData = await onGetThirdUserData(params.user_nick);
+            }
             setUserData({
                 name: userData.user_name,
                 secondName: userData.user_second_name,
@@ -27,19 +37,27 @@ export const Profile = () => {
                 secondLastName: userData.user_second_lastname,
                 email: userData.user_email,
                 rol: userData.rol_name,
-                img: 'http://localhost:4000/' + img_path
+                img: 'http://localhost:4000/' + userData.user_profile_img_filename
             });
             return userData;
         }
         getUser();
-    }, [])
+    }, []);
+
+    const updateProfile = () => {
+        return (
+        <div>
+            <Link to={'/profile/update'}>Actualizar datos del perfil</Link>
+            <Link to={'/profile/update-img'}>Actualizar foto de perfil</Link>
+        </div>
+        )
+    }
     
     return (
         <>
             <h1>{userData.name}</h1>
             <img src={userData.img} alt="Profile img" />
-            <Link to={'/profile/update'}>Actualizar datos del perfil</Link>
-            <Link to={'/profile/update-img'}>Actualizar foto de perfil</Link>
+            {ownProfile ? updateProfile() : null}
         </>
     )
 }

@@ -1,11 +1,12 @@
 import {createContext, useContext, useState} from 'react';
+import { useParams } from 'react-router-dom';
 import { getPostsRequest, getPostRequest, newPostRequest, newCommentRequest } from '../API/posts.api';
 import { loginRequest, 
          registerRequest, 
          getProfileDataRequest, 
+         getThirdUserProfileRequest,
          updateUserAccount, 
-         updateUserImg, 
-         getUserImg } 
+         updateUserImg } 
     from '../API/user.api';
 
 export const FreelanceContext = createContext();
@@ -22,6 +23,8 @@ export const FreelanceContextProvider = ({children}) => {
 
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState();
+
+    const params = useParams();
 
     // POST REQUESTS 
 
@@ -90,8 +93,17 @@ export const FreelanceContextProvider = ({children}) => {
                 const userData = await getProfileDataRequest();
                 return userData.data[0];
             } else {
-                console.log('TODO: redirect to login');
+                history.back();
             }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onGetThirdUserData = async (user_nick) => {
+        try {
+            const userData = await getThirdUserProfileRequest(user_nick);
+            return userData.data;
         } catch (error) {
             console.log(error);
         }
@@ -118,16 +130,6 @@ export const FreelanceContextProvider = ({children}) => {
         }
     }
 
-    const onGetUserImg = async () => {
-        try {
-            const userImg = await getUserImg();
-            const img_path = userImg.data;
-            return img_path;
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
         <FreelanceContext.Provider value={
             {
@@ -139,9 +141,9 @@ export const FreelanceContextProvider = ({children}) => {
                 onLogin, 
                 onRegister, 
                 onGetUserData,
+                onGetThirdUserData,
                 onNewAccountData,
                 onNewProfileImg,
-                onGetUserImg,
                 user
             }
         }>

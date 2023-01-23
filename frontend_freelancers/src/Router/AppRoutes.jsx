@@ -9,6 +9,7 @@ export const AppRoutes = () => {
             <Route path='/login' element={<Login />}/>
             <Route path='/register' element={<Register />}/>
             <Route path='/profile' element={<Profile />}/>
+            <Route path='/profile/:user_nick' element={<Profile />}/>
             <Route path='/profile/update' element={<UpdateAccount />}/>
             <Route path='/profile/update-img' element={<UpdateProfileImg />}/>
             <Route path='/posts' element={<Posts />}/>

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useFreelanceContext } from '../../context/FreelanceContext';
 import { Markup } from 'interweave';
-import { CreateComment } from '../../components/CreateComment';
-import { Comments } from '../../components/Comments';
+import { Comments, CreateComment } from '../../components';
 
 export const Post = () => {
 
@@ -14,6 +13,7 @@ export const Post = () => {
         title: '',
         body: '',
         author: '',
+        author_nick: '',
         post_at: '',
         comments: {}
     });
@@ -27,6 +27,7 @@ export const Post = () => {
                 title: post.post[0].post_title,
                 info: post.post[0].post_info,
                 author: post.post[0].user_name,
+                author_nick: post.post[0].user_nick,
                 post_at: post.post[0].post_at
             });
             const comments = setComments([post.comments])
@@ -42,7 +43,7 @@ export const Post = () => {
                 <div className="post-header">
                     <div className="post-info">
                         <p>
-                            {post.author}
+                            <Link to={`/profile/${post.author_nick}`}>{post.author}</Link>
                         </p>
                         <p>
                             {post.post_at}
@@ -57,7 +58,15 @@ export const Post = () => {
                 </div>
             </div>
 
-            <CreateComment post_id={post.post_id}/>
+            {
+                sessionStorage.getItem('token')
+                ? 
+                    <CreateComment post_id={post.post_id}/>
+                : 
+                    <>
+                        <span>Para poder crear un comentario, debes </span><Link to={'/login'}>Iniciar sesión</Link>
+                    </>
+            }
             
             <Comments comments={comments} />
         </>

@@ -16,7 +16,7 @@ const getPost = async (req, res) => {
         // SELECTING POST DATA
         const [post] = await pool.query(`
         SELECT 
-        u.user_name, p.*
+        u.user_name, u.user_nick, p.*
         FROM posts AS p
         INNER JOIN users AS u
         ON p.post_author_id=u.user_id

@@ -6,6 +6,7 @@ export const Navbar = () => {
 
     function onDeleteSession() {
         sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user_nick');
         navigate('login');
     }
 

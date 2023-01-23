@@ -18,9 +18,11 @@ export const Profile = () => {
     });
 
     let ownProfile = false;
+    const sessionNick = sessionStorage.getItem('user_nick');
     
     if(params.user_nick) ownProfile = false;
     if(!params.user_nick) ownProfile = true;
+    if(sessionNick === params.user_nick) ownProfile = true;
     
     useEffect(() => {
         const getUser = async () => {
@@ -39,6 +41,7 @@ export const Profile = () => {
                 rol: userData.rol_name,
                 img: 'http://localhost:4000/' + userData.user_profile_img_filename
             });
+            
             return userData;
         }
         getUser();

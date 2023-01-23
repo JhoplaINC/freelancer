@@ -29,19 +29,20 @@ const registerRequest = async (req, res) => {
 const loginRequest = async (req, res) => {
     try {
         const {email, password} = req.body;
-        const [user] = await pool.query(`SELECT user_id, user_name, user_password FROM users WHERE user_email = ?`, [email]);
+        const [user] = await pool.query(`SELECT user_id, user_name, user_password, user_nick FROM users WHERE user_email = ?`, [email]);
         if(user.length === 0) return res.send('No matching user with that email');
 
         const dbPassword = user[0].user_password;
         let userId = user[0].user_id;
+        let userNick = user[0].user_nick;
         const matchingPasswords = await bcrypt.compare(password, dbPassword);
     
         if(matchingPasswords){
-            const token = jwt.sign({id: userId}, secret, {
+            const token = jwt.sign({id: userId, nick: userNick}, secret, {
                 expiresIn: 60 * 60 * 4
             });
-            
-            res.json({auth: true, token});
+
+            res.json({auth: true, nick: userNick, token});
         } else {
             res.send('No matching pass');
         }

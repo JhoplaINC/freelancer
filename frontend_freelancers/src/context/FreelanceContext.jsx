@@ -70,6 +70,7 @@ export const FreelanceContextProvider = ({children}) => {
             const loginData = await loginRequest(email, password);
             if(loginData.data.auth === true){
                 sessionStorage.setItem('token', loginData.data.token);
+                sessionStorage.setItem('user_nick', loginData.data.nick);
             } else {
                 console.log(loginData.data);
             }

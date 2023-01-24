@@ -1,5 +1,5 @@
 export const IndexPage = () => {
     return (
-        <div>Index</div>
+        <button className="btn btn-primary">asd</button>
     )
 }

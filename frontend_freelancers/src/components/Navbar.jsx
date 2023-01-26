@@ -13,6 +13,7 @@ export const Navbar = () => {
     function loggedUser() {
         return (
             <ul className="dropdown-menu">
+                <li><Link className="dropdown-item" to={'/profile'}>Mi perfil</Link></li>
                 <li><button className="dropdown-item" onClick={() => onDeleteSession()}>Logout</button></li>
             </ul>
         );

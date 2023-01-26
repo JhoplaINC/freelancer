@@ -5,6 +5,9 @@ import { registerRequest,
          loginRequest, 
          userProfile,
          thirdUserProfile,
+         followUser,
+         getFollowing,
+         getFollowers,
          updateProfile, 
          updateUserImg }
     from '../controllers/accountController.js';
@@ -33,6 +36,12 @@ router.post('/login', loginRequest);
 router.get('/profile', verifyToken, userProfile);
 
 router.get('/profile/:user_nick', thirdUserProfile);
+
+router.post('/follow', verifyToken, followUser);
+
+router.get('/following/:user_nick', getFollowing);
+
+router.get('/followers/:user_nick', getFollowers);
 
 router.post('/update', verifyToken, updateProfile);
 

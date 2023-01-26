@@ -4,10 +4,11 @@ import { Link, useParams } from 'react-router-dom';
 
 export const Profile = () => {
 
-    const {onGetUserData, onGetThirdUserData } = useFreelanceContext();
+    const {onFollowUser, onGetUserData, onGetThirdUserData } = useFreelanceContext();
     const params = useParams();
 
     const [userData, setUserData] = useState({
+        id: '',
         name: '',
         secondName: '',
         lastname: '',
@@ -33,6 +34,7 @@ export const Profile = () => {
                 userData = await onGetThirdUserData(params.user_nick);
             }
             setUserData({
+                id: userData.user_id,
                 name: userData.user_name,
                 secondName: userData.user_second_name,
                 lastname: userData.user_lastname,
@@ -55,12 +57,19 @@ export const Profile = () => {
         </div>
         )
     }
+
+    const followUser = (followed_id) => {
+        return (
+            <button onClick={() => onFollowUser(followed_id)}>Seguir</button>
+        )
+    }
     
     return (
         <>
             <h1>{userData.name}</h1>
             <img src={userData.img} alt="Profile img" />
             {ownProfile ? updateProfile() : null}
+            {!ownProfile ? followUser(userData.id) : null}
         </>
     )
 }

@@ -5,6 +5,7 @@ import { loginRequest,
          registerRequest, 
          getProfileDataRequest, 
          getThirdUserProfileRequest,
+         followUser,
          updateUserAccount, 
          updateUserImg } 
     from '../API/user.api';
@@ -94,7 +95,7 @@ export const FreelanceContextProvider = ({children}) => {
                 const userData = await getProfileDataRequest();
                 return userData.data[0];
             } else {
-                history.back();
+                window.location.replace('/login');
             }
         } catch (error) {
             console.log(error);
@@ -107,6 +108,15 @@ export const FreelanceContextProvider = ({children}) => {
             return userData.data;
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const onFollowUser = async (followed_id) => {
+        try {
+            const resp = await followUser(followed_id);
+            console.log(resp);
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -143,6 +153,7 @@ export const FreelanceContextProvider = ({children}) => {
                 onRegister, 
                 onGetUserData,
                 onGetThirdUserData,
+                onFollowUser,
                 onNewAccountData,
                 onNewProfileImg,
                 user

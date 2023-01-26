@@ -84,6 +84,50 @@ const userProfile = async (req, res) => {
     }
 }
 
+const followUser = async (req, res) => {
+    try {
+        const following_id = req.userId;
+        const followed_id = req.body.followed;
+        const [follow] = await pool.query(`
+            INSERT INTO followers
+            (id_user_following, id_user_followed)
+            VALUES
+            (?, ?)
+        `, [following_id, followed_id]);
+        res.send(follow);
+    } catch (error) {
+        console.log(error);   
+    }
+}
+
+const getFollowing = async (req, res) => {
+    try {
+        const [following] = await pool.query(`
+            SELECT f.* FROM followers AS f
+            LEFT JOIN users AS u
+            ON f.id_user_following = u.user_id
+            WHERE u.user_nick = ?
+        `, [req.params.user_nick]);
+        res.send(following);   
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getFollowers = async (req, res) => {
+    try {
+        const [followers] = await pool.query(`
+            SELECT f.* FROM followers AS f
+            LEFT JOIN users AS u
+            ON f.id_user_followed = u.user_id
+            WHERE u.user_nick = ?
+        `, [req.params.user_nick]);
+        res.send(followers);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const updateProfile = async (req, res) => {
     try {
         const [newUser] = await pool.query(`
@@ -117,4 +161,4 @@ const updateUserImg = async (req, res) => {
     }
 }
 
-export { registerRequest, loginRequest, userProfile, thirdUserProfile, updateProfile, updateUserImg }
+export { registerRequest, loginRequest, userProfile, thirdUserProfile, followUser, getFollowing, getFollowers, updateProfile, updateUserImg }

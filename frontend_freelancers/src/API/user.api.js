@@ -16,6 +16,11 @@ export async function getThirdUserProfileRequest(user_nick) {
     return await axios.get(`http://localhost:4000/profile/${user_nick}`);
 }
 
+export async function followUser(followed_id) {
+    return await axios.post('http://localhost:4000/follow', {followed: followed_id}, 
+    { headers: { 'x-access-token': sessionStorage.getItem('token') } });
+}
+
 export async function updateUserAccount(newAccountInfo) {
     return await axios.post(`http://localhost:4000/update`,
     newAccountInfo, { headers: { 'x-access-token': sessionStorage.getItem('token') } })

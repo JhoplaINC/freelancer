@@ -11,7 +11,6 @@ export function verifyToken(req, res, next) {
             message: 'User is not logged in'
         });
     }
-
     const decoded = jwt.verify(token, secret);
 
     req.userId = decoded.id;

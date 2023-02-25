@@ -8,6 +8,7 @@ import { registerRequest,
          followUser,
          getFollowing,
          getFollowers,
+         isFollowing,
          updateProfile, 
          updateUserImg }
     from '../controllers/accountController.js';
@@ -42,6 +43,8 @@ router.post('/follow', verifyToken, followUser);
 router.get('/following/:user_nick', getFollowing);
 
 router.get('/followers/:user_nick', getFollowers);
+
+router.post('/isfollowing', verifyToken, isFollowing);
 
 router.post('/update', verifyToken, updateProfile);
 

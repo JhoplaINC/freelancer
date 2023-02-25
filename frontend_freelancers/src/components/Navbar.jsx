@@ -4,6 +4,8 @@ export const Navbar = () => {
     
     const navigate = useNavigate();
 
+    const userNick = sessionStorage.getItem('user_nick');
+
     function onDeleteSession() {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('user_nick');
@@ -13,7 +15,7 @@ export const Navbar = () => {
     function loggedUser() {
         return (
             <ul className="dropdown-menu">
-                <li><Link className="dropdown-item" to={'/profile'}>Mi perfil</Link></li>
+                <li><Link className="dropdown-item" to={`/profile/${userNick}`}>Mi perfil</Link></li>
                 <li><button className="dropdown-item" onClick={() => onDeleteSession()}>Logout</button></li>
             </ul>
         );

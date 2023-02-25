@@ -128,6 +128,23 @@ const getFollowers = async (req, res) => {
     }
 }
 
+const isFollowing = async (req, res) => {
+    try {
+        let isFollow = false;
+        const following_id = req.userId;
+        const followed_id = req.body.followed;
+        const [user_data] = await pool.query(`
+            SELECT * FROM followers
+            WHERE id_user_following = ?
+            AND id_user_followed = ?
+        `, [following_id, followed_id]);
+        if(user_data.length >= 1) isFollow = true;
+        res.send(isFollow);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const updateProfile = async (req, res) => {
     try {
         const [newUser] = await pool.query(`
@@ -161,4 +178,15 @@ const updateUserImg = async (req, res) => {
     }
 }
 
-export { registerRequest, loginRequest, userProfile, thirdUserProfile, followUser, getFollowing, getFollowers, updateProfile, updateUserImg }
+export { 
+        registerRequest, 
+        loginRequest, 
+        userProfile, 
+        thirdUserProfile, 
+        followUser, 
+        getFollowing, 
+        getFollowers, 
+        isFollowing,
+        updateProfile, 
+        updateUserImg 
+}

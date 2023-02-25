@@ -34,7 +34,7 @@ export const Post = () => {
             return {post, comments};
         }
         loadPost();
-    }, []);
+    }, [comments]);
  
 
     return (

@@ -17,12 +17,16 @@ export const CreateComment = ({post_id}) => {
         getUser();
     }, []);
     
+    const addComment = () => {
+        onNewComment(postData.user_id, post_id, comment.value);
+        comment.value = '';
+    }
 
     return (
         <div>
             <textarea name="comment" id="comment" placeholder="Ingresa tu comentario"></textarea>
             
-            <button onClick={() => onNewComment(postData.user_id, post_id, comment.value)}>Publicar comentario</button>
+            <button onClick={() => addComment()}>Publicar comentario</button>
         </div>
     )
 }

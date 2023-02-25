@@ -6,6 +6,7 @@ import { loginRequest,
          getProfileDataRequest, 
          getThirdUserProfileRequest,
          followUser,
+         userIsFollowing,
          updateUserAccount, 
          updateUserImg } 
     from '../API/user.api';
@@ -111,12 +112,12 @@ export const FreelanceContextProvider = ({children}) => {
         }
     }
 
-    const onFollowUser = async (followed_id) => {
+    const isFollowing = async (followed_id) => {
         try {
-            const resp = await followUser(followed_id);
-            console.log(resp);
+            const resp = await userIsFollowing(followed_id);
+            return resp.data;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
@@ -153,7 +154,8 @@ export const FreelanceContextProvider = ({children}) => {
                 onRegister, 
                 onGetUserData,
                 onGetThirdUserData,
-                onFollowUser,
+                followUser,
+                isFollowing,
                 onNewAccountData,
                 onNewProfileImg,
                 user
